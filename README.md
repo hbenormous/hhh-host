@@ -1,7 +1,7 @@
-<p align="center"><img src="./docs/img/icon.png" width="100" style="text-align: center;">
+<p align="center"><img src="https://raw.githubusercontent.com/hbenormous/hhh-host/main/docs/img/icon.png" width="100" style="text-align: center;">
 </p>
 
-<h1 align="center">Haxball Headless Help Host </h1>
+<h1 align="center">Haxball Headless Help Host</h1>
 
 [![versão da lib](https://img.shields.io/npm/v/hhh-host.svg)](https://www.npmjs.com/package/hhh-host)
 
@@ -59,6 +59,7 @@ server.run({
 - `!kick playerID ban reason` - kick the player out of the room. ban(yes or no). Ex.: !kick 2 yes racismo na sala
 - `!players` - shows the players that are in the room
 - `!room` - show room info
+- `!cmds` - show all commands
 
 <hr>
 
