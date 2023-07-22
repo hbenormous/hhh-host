@@ -1,3 +1,6 @@
+**Github - Personal Access Token**
+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
+
 # DEBUG
 
 # PRÓXIMAS MUDANÇAS/OBJETIVOS
