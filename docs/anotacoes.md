@@ -1,15 +1,4 @@
-Personal Access Token
-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
-
-
-# MUDANÇAS EM TEMPO REAL/UPDATES CONFIRMADOS
-- adicionar o evento onGameRecording pra saber quando a gravação foi iniciada e terminada
-- adicionar o evento onPlayerBallTouch pra saber qual jogador tocou na bola. ele retorna o PlayerObject do jogador
-- PlayerObject { fps, maxPing }
-- adicionar no RoomConfigObject o `setCustomStadiumpByLink(url)` adiciona um mapa pelo link inserido no `url`
-- adicionar onPlayerAvatarChange
-- deixar o usuario escolher se quer abrir o navegador ou não
-
+# DEBUG
 
 # PRÓXIMAS MUDANÇAS/OBJETIVOS
 - refazer toda a api novamente(pq sapora eu fiz com o cu e n to entendendo nada dela)
@@ -22,3 +11,10 @@ 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
 - usar o haxroomie-core pra deixar melhor
 - adicionar os novos comandos no CLI
 - usar o Simpl.db pra criar uma db local de fácil acesso e edição pro usuário
+- adicionar o evento onGameRecording pra saber quando a gravação foi iniciada e terminada
+- adicionar o evento onPlayerBallTouch pra saber qual jogador tocou na bola. ele retorna o PlayerObject do jogador
+- PlayerObject { fps, maxPing }
+- adicionar no RoomConfigObject o `setCustomStadiumpByLink(url)` adiciona um mapa pelo link inserido no `url`
+- adicionar onPlayerAvatarChange
+- deixar o usuario escolher se quer abrir o navegador ou não
+- opção de frameworks(jquery, vim, etc)

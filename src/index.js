@@ -23,7 +23,7 @@ class Server {
 					message: roomLink
 				}));
 
-				await fun.sleep(2000);
+				await fun.sleep(500);
 
 				console.log(fun.terminalConfig({
 					type: "terminal",
@@ -31,7 +31,7 @@ class Server {
 					message: "!send [message], !clearbans, !close"
 				}));
 
-				await fun.sleep(1000);
+				await fun.sleep(500);
 
 				await prompt.terminal();
 			})();
@@ -78,6 +78,12 @@ class Server {
 
 	async run ({file, discordToken}) {
 		if ( (file && discordToken) != undefined ) {
+			console.log(fun.terminalConfig({
+				type: "haxball",
+				callType: "warn",
+				message: "Get your token: https://www.haxball.com/headlesstoken"
+			}));
+			await fun.sleep(500);
 			let haxballToken = await prompt.question(fun.terminalConfig({
 				type: "haxball",
 				callType: "warn",

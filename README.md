@@ -20,7 +20,9 @@
 ```js
 const room = HBInit({});
 
-room.onPlayerJoin = player => room.sendAnnouncement("Hi "+ player.name, player.id);
+room.onPlayerJoin = (player) => {
+    room.sendAnnouncement(`Hi, ${player.name}[${player.ipv4}]`, player.id);
+};
 ````
 
 #### api.js
@@ -30,13 +32,13 @@ const { Server } = require("hhh-host");
 const server = new Server();
 
 /**
- * @key {file} your bot file
- * @key {discordToken} your discord bot token. https://discordjs.guide/preparations/setting-up-a-bot-application.html#your-bot-s-token
+ * @param {string} file - Your bot file.
+ * @param {string} discordToken - Your discord bot token. https://discordjs.guide/preparations/setting-up-a-bot-application.html#your-bot-s-token
  */
 
 server.run({
     file: "my-bot-example.js",
-    discordToken: "your token"
+    discordToken: "YOUR_DISCORD_TOKEN"
 });
 ```
 

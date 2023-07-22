@@ -11,20 +11,13 @@ var frame;
 
 class HBInit {
 
-    async getRecaptchaResponse() {
+    async getRoomLink() {
         await frame.waitForSelector("#recaptcha");
-        const res = await frame.evaluate(() => {
-            return grecaptcha?.getResponse();
+        const recaptcha = await frame.evaluate(() => {
+            return this?.grecaptcha;
         });
 
-        // string
-        return res;
-    }
-
-    async getRoomLink() {
-        const recaptchaRes = await this.getRecaptchaResponse();
-
-        if (recaptchaRes === undefined || recaptchaRes?.length === 0) {
+        if (recaptcha !== undefined || recaptcha?.getResponse()) {
             console.log(fun.terminalConfig({
                 type: "haxball",
                 callType: "error",
@@ -33,7 +26,7 @@ class HBInit {
             process.exit(true);
         }
 
-        await page.waitForSelector("#roomlink a");
+        await frame.waitForSelector("#roomlink a");
         return await frame.$eval("#roomlink a", el => {
             return el.getAttribute("href");
         });
@@ -51,7 +44,7 @@ class HBInit {
 
         page = await browser.newPage();
 
-        await page.goto("https://html5.haxball.com/hhyLXo3K/__cache_static__/g/headless.html", {
+        await page.goto("https://www.haxball.com/headless", {
             waitUntil: "networkidle2"
         });
         await page.waitForTimeout(5000);
@@ -59,28 +52,21 @@ class HBInit {
         const iframeEl = await page.waitForSelector("iframe");
         frame = await iframeEl.contentFrame();
 
-        /**
-         * inserir o script da API editado
-         */
-        await frame.evaluate(fs.readFileSync(__dirname + "/api/edited-headless-min.js", {
+        const headlessMinJs = await fs.readFileSync(__dirname + "/api/edited-headless-min.js", {
             encoding: "utf-8"
-        }));
-        await page.waitForTimeout(3000);
-
-        /**
-         * criar uma variavel global chamada {token} que recebe uma string com o token
-         */
-        await frame.addScriptTag({
-            content: `this._fjdora_HHHEdited.token = "${haxballToken}";`
         });
+        await frame.evaluate(headlessMinJs, { timeout: 10000 });
+        await frame.waitForTimeout(3000);
 
-        /**
-         * inserir o script do usuário na página
-         */
-        await page.evaluate(fs.readFileSync(file, {
+        await frame.evaluate((haxballToken) => {
+            this._fjdora_HHHEdited.token = haxballToken;
+        }, haxballToken);
+
+        const userCode = await fs.readFileSync(file, {
             encoding: "utf-8"
-        }));
-        await page.waitForTimeout(5000); // tempo minimo pra evitar qualquer erro
+        });
+        await page.evaluate(userCode, { timeout: 10000 });
+        await frame.waitForTimeout(3000);
 
         /**
          * retorna o link da sala. Uma string
@@ -89,50 +75,33 @@ class HBInit {
 
     }
 
+    async room(method, args = []) {
+        return await frame.evaluate((method, args) => {
+            if (["CollisionFlags", "configObject"].includes(method)) {
+                return this._fjdora_HHHEdited.room[method];
+            }
+            return this._fjdora_HHHEdited.room[method](...args);
+        }, method, args);
+    }
+
     async sendAnnouncement(message = null, targetId = null, color = 0xffffff, style = null, sound = null) {
-
-        await frame.addScriptTag({
-            content: `_fjdora_HHHEdited.room.sendAnnouncement("${message}", ${targetId}, "${color}", "${style}", "${sound}");`
-        });
-
+        await this.room("sendAnnouncement", [message, targetId, color, style, sound]);
     }
 
     async clearBans() {
-
-        await frame.addScriptTag({
-            content: `_fjdora_HHHEdited.room.clearBans();`
-        });
-
+        await this.room("clearBans");
     }
 
-    async kickPlayer(playerID, reason = "", ban) {
-
-        await frame.addScriptTag({
-            content: `_fjdora_HHHEdited.room.kickPlayer(${playerID}, "${reason}", ${ban});`
-        });
-
+    async kickPlayer(playerId, reason = "", ban = false) {
+        await this.room("kickPlayer", [playerId, reason, ban]);
     }
 
     async getPlayerList() {
-
-        const players = await frame.evaluate(() => {
-
-            return _fjdora_HHHEdited.room.getPlayerList();
-
-        });
-
-        return players;
-
+        return await this.room("getPlayerList");
     }
 
     async configObject() {
-
-        return await frame.evaluate(() => {
-
-            return _fjdora_HHHEdited.room.configObject;
-
-        });
-
+        return await this.room("configObject");
     }
 
 }
